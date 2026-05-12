@@ -1,0 +1,2 @@
+# wordpress-docker
+NginxとMariaDBでWordPressを構築するためのDocker Composeファイルです。
