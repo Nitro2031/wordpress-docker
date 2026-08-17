@@ -78,3 +78,59 @@ git push origin feature/your-feature-name
 ## テスト
 - 変更を加える前に、既存の機能が正常に動作することを確認してください。
 - 可能な限り、ユニットテストや統合テストを追加してください。
+
+# 開発環境構築手順
+WindowsではWSL2の場合も、Docker Desktopをインストールして、Linuxコンテナを使用することを推奨します。
+```
+docker compose up -d --build
+```
+```
+docker compose down
+```
+
+## ログの確認
+```
+docker compose logs -f wordpress
+```
+```
+docker logs -f wordpress
+```
+```
+docker logs -f nginx
+```
+
+## uploads ディレクトリの権限が 755 になっている
+WordPress は www-data ユーザーで動くため、書き込み権限が必要です。
+
+コンテナ内で以下を実行すると直ります：
+```
+docker exec -it wordpress bash
+```
+```
+cd /var/www/html/wp-content
+chown -R www-data:www-data uploads
+chmod -R 775 uploads
+```
+
+## MariaDB に接続する
+```
+docker exec -it mariadb mariadb -u root -p
+```
+MariaDB [(none)]> SELECT Host, User, plugin FROM mysql.user;
+```
+SELECT Host, User, plugin FROM mysql.user;
+```
+
+## SQL を流し込む
+```bash
+docker exec -i mariadb_ntl mariadb -u root -prootPassword ntl < ntl (挿入前にテーブルを空にする).sql
+```
+
+## 修正方法
+```bash
+docker exec -it mariadb_ntl mariadb -u root -prootPassword ntl
+```
+```sql
+UPDATE ntl_options SET option_value='http://localhost/' WHERE option_name='siteurl';
+UPDATE ntl_options SET option_value='http://localhost/' WHERE option_name='home';
+```
