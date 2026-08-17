@@ -123,14 +123,14 @@ SELECT Host, User, plugin FROM mysql.user;
 
 ## SQL を流し込む
 ```bash
-docker exec -i mariadb_ntl mariadb -u root -prootPassword ntl < ntl (挿入前にテーブルを空にする).sql
+docker exec -i mariadb mariadb -u root -prootPassword wordpress < wordpress (挿入前にテーブルを空にする).sql
 ```
 
 ## 修正方法
 ```bash
-docker exec -it mariadb_ntl mariadb -u root -prootPassword ntl
+docker exec -it mariadb mariadb -u root -prootPassword wordpress
 ```
 ```sql
-UPDATE ntl_options SET option_value='http://localhost/' WHERE option_name='siteurl';
-UPDATE ntl_options SET option_value='http://localhost/' WHERE option_name='home';
+UPDATE wp_options SET option_value='http://localhost/' WHERE option_name='siteurl';
+UPDATE wp_options SET option_value='http://localhost/' WHERE option_name='home';
 ```
